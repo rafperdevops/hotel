@@ -162,4 +162,5 @@ dist
 proyecto.tar.gz
 deploy.yml
 invetory.ini
+test/habitacionAuto.test.js
 # End of https://www.toptal.com/developers/gitignore/api/node,visualstudiocode

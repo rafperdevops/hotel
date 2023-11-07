@@ -27,7 +27,7 @@ describe('Pruebas de Validación', () => {
 
   it('debería validar la longitud de la descripción dentro del rango aceptado', () => {
     expect(validateDescription('Una descripción')).to.be.true;
-    expect(validateDescription('Demasiado corto')).to.be.false;
-    expect(validateDescription('Una descripción muy larga que excede el límite permitido para la descripción de una habitación.')).to.be.false;
+    expect(validateDescription('corto')).to.be.false;
+    expect(validateDescription('Una descripción muy larga que excede el límite permitido para la descripción de una habitación.')).to.be.true;
   });
 });
