@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Room Management</title>
+</head>
+
+<body>
+    <h1>Room Management</h1>
+
+    <form id="roomForm">
+        <label for="id">ID:</label>
+        <input type="number" id="id" name="id"><br><br>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"><br><br>
+
+        <label for="description">Description:</label>
+        <input type="text" id="description" name="description"><br><br>
+
+        <label for="capacity">Capacity:</label>
+        <input type="number" id="capacity" name="capacity"><br><br>
+
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price"><br><br>
+
+        <button type="button" onclick="getRoomById()">Consultar</button>
+        <button type="button" onclick="saveRoom()">Guardar</button>
+        <button type="button" onclick="updateRoom()">Editar</button>
+        <button type="button" onclick="deleteRoom()">Eliminar</button>
+    </form>
+
+    <div id="message"></div>
+
+    <script>
+        async function saveRoom() {
+            const roomForm = document.getElementById('roomForm');
+            const roomData = {
+                id: document.getElementById('id').value,
+                name: document.getElementById('name').value,
+                description: document.getElementById('description').value,
+                capacity: document.getElementById('capacity').value,
+                price: document.getElementById('price').value
+            };
+
+            const response = await fetch('/rooms', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(roomData)
+            });
+            handleResponse(response);
+        }
+
+        async function updateRoom() {
+            const id = document.getElementById('id').value;
+            const roomData = {
+                name: document.getElementById('name').value,
+                description: document.getElementById('description').value,
+                capacity: document.getElementById('capacity').value,
+                price: document.getElementById('price').value
+            };
+
+            const response = await fetch(`/rooms/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(roomData)
+            });
+            handleResponse(response);
+        }
+
+        async function deleteRoom() {
+            const id = document.getElementById('id').value;
+            const response = await fetch(`/rooms/${id}`, {
+                method: 'DELETE'
+            });
+            handleResponse(response);
+        }
+
+        function handleResponse(response) {
+            const messageContainer = document.getElementById('message');
+            response.json().then(data => {
+                if (response.ok) {
+                    messageContainer.innerText = 'Operación exitosa';
+                    if (response.status !== 204) { // No limpiar el formulario para DELETE (status 204)
+                        document.getElementById('roomForm').reset(); // Limpia el formulario en caso de éxito
+                    }
+                } else {
+                    messageContainer.innerText = `Error: ${data.message}`;
+                }
+            }).catch(error => {
+                messageContainer.innerText = 'Error en la solicitud';
+            });
+        }
+
+        async function getRoomById() {
+            const roomId = document.getElementById('id').value;
+            const response = await fetch(`/rooms/${roomId}`, {
+                method: 'GET'
+            });
+
+            if (response.ok) {
+                const room = await response.json();
+                // Colocar los datos recibidos en los campos respectivos del formulario
+                document.getElementById('id').value = room.id;
+                document.getElementById('name').value = room.name;
+                document.getElementById('description').value = room.description;
+                document.getElementById('capacity').value = room.capacity;
+                document.getElementById('price').value = room.price;
+            } else {
+                alert('Habitación no encontrada');
+            }
+        }
+    </script>
+
+</body>
+
+</html>
