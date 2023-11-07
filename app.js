@@ -5,7 +5,7 @@ const roomRoutes = require('./routes/roomRoutes');
 const app = express();
 const PORT = 3000;
 
-mongoose.connect('mongodb://127.0.0.1:27017/reservas', {
+mongoose.connect('mongodb://mongo_server:27017/reservas', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
