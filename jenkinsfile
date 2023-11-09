@@ -1,19 +1,57 @@
 pipeline {
  agent any
+
+ environment{
+    nodeJSInstallationName = 'node21.1.0'
+ }
+
  stages {
-    stage('Install') {
+    stage('Clonar repositorio') {
         steps {
-            sh 'npm install'
+            git 'https://github.com/rafperdevops/hotel.git'
         }
-        }
-        stage('Test') {
+    }
+    stage('Instalar dependencias') {        
         steps {
-            sh 'npm test'
+            script {
+                withNodeJS(env.nodeJSInstallationName) {
+                    sh 'npm install'
+                }
+            }
         }
-        }
-        stage('Start app') {
+    }
+    stage('Realizar pruebas') {
         steps {
-            sh 'npm start'
+            script {
+                withNodeJS(env.nodeJSInstallationName) {
+                    sh 'npm test'
+                }
+            }
+        }
+    }
+    // stage('Inicias app') {
+    //     steps {
+    //         script {
+    //             withNodeJS(env.nodeJSInstallationName) {
+    //                 sh 'node app.js'
+    //             }
+    //         }
+    //     }
+    // }
+    post {
+        always {
+            // Acciones que se ejecutarán siempre, independientemente del resultado del pipeline
+            deleteDir() // Borra los archivos residuales de la ejecución del job
+        }
+        
+        success {
+            // Acciones que se ejecutarán solo si el pipeline tiene éxito
+            echo 'El pipeline se ejecutó exitosamente'
+        }
+        
+        failure {
+            // Acciones que se ejecutarán solo si el pipeline falla
+            echo 'El pipeline falló'
         }
     }
  }
