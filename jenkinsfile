@@ -1,10 +1,6 @@
 pipeline {
  agent any
 
- environment{
-    nodeJSInstallationName = 'node21.1.0'
- }
-
  stages {
     stage('Clonar repositorio') {
         steps {
@@ -13,32 +9,20 @@ pipeline {
     }
     stage('Instalar dependencias') {        
         steps {
-            script {
-                withNodeJS(env.nodeJSInstallationName) {
-                    sh 'npm install'
-                }
+            nodejs(nodeJSInstallationName: 'node21.1.0'){
+                sh 'npm install'
             }
         }
     }
     stage('Realizar pruebas') {
         steps {
-            script {
-                withNodeJS(env.nodeJSInstallationName) {
-                    sh 'npm test'
-                }
+            nodejs(nodeJSInstallationName: 'node21.1.0'){
+                sh 'npm test'
             }
         }
     }
-    // stage('Inicias app') {
-    //     steps {
-    //         script {
-    //             withNodeJS(env.nodeJSInstallationName) {
-    //                 sh 'node app.js'
-    //             }
-    //         }
-    //     }
-    // }
-    post {
+ }
+post {
         always {
             // Acciones que se ejecutarán siempre, independientemente del resultado del pipeline
             deleteDir() // Borra los archivos residuales de la ejecución del job
@@ -54,5 +38,4 @@ pipeline {
             echo 'El pipeline falló'
         }
     }
- }
 }
