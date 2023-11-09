@@ -5,16 +5,16 @@ const roomRoutes = require('./routes/roomRoutes');
 const app = express();
 const PORT = 3000;
 
-mongoose.connect('mongodb://mongo_server:27017/reservas', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
+// mongoose.connect('mongodb://mongo_server:27017/reservas', {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true
+// });
 
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'Error de conexión a MongoDB:'));
-db.once('open', () => {
-  console.log('Conexión exitosa a la base de datos');
-});
+// const db = mongoose.connection;
+// db.on('error', console.error.bind(console, 'Error de conexión a MongoDB:'));
+// db.once('open', () => {
+//   console.log('Conexión exitosa a la base de datos');
+// });
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
