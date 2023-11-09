@@ -1,20 +1,20 @@
 pipeline {
-   agent any 
-   stages {
-      stage('Install') {
-         steps {
-            sh 'npm install'
-         }
-      }
-      stage('Test') {
-         steps {
-            sh 'npm test'
-         }
-      }
-      stage('Start app') {
-         steps {
-            sh 'npm start'
-         }
-      }
-   }
+ agent any
+ stages {
+    stage('Install') {
+        steps {
+            sh 'npm install'
+        }
+        }
+        stage('Test') {
+        steps {
+            sh 'npm test'
+        }
+        }
+        stage('Start app') {
+        steps {
+            sh 'npm start'
+        }
+    }
+ }
 }
