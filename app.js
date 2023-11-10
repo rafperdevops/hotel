@@ -23,5 +23,5 @@ app.use(express.static('public'));
 app.use('/rooms', roomRoutes);
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Corriendo servidor en el puerto ${PORT}`);
 });
